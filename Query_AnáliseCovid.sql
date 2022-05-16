@@ -1,3 +1,6 @@
+--Covid 19 Data Analysis
+
+
 select *
 from [Projeto 1 ].dbo.Mortes_Covid
 where continent is not null
