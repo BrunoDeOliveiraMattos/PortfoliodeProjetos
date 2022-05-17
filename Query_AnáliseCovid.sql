@@ -9,7 +9,6 @@ where continent is not null
 select location, date, ((total_deaths/total_cases) *100) as 'Porcentagem de Mortes'
 from [Projeto 1 ].dbo.Mortes_Covid
 where continent is not null
---where location like '%Brazil%' -- Aqui basta inserir o nome do país
 Order by 1,2
 
 
@@ -18,7 +17,6 @@ Order by 1,2
 select location, date, population, ((total_deaths/population)*100) as 'Mortes/Habitantes'
 from [Projeto 1 ].dbo.Mortes_Covid
 where continent is not null
---where location like '%Brazil%' -- Aqui basta inserir o nome do país
 Order by 1,2
 
 
@@ -27,7 +25,6 @@ Order by 1,2
 select location, date, population, ((total_cases/population)*100) as 'Porcentagem da População Infectada'
 from [Projeto 1 ].dbo.Mortes_Covid
 where continent is not null
---where location like '%Brazil%' -- Aqui basta inserir o nome do país
 Order by 1,2
 
 
