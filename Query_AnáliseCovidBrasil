@@ -1,0 +1,38 @@
+-- Fazendo análises pro Brasil
+
+-- A chance de você vir a falecer caso você pegue Covid no seu país
+select location, date, total_deaths, total_cases, ((total_deaths/total_cases) *100) as 'TaxaMortalidade'
+from [Projeto 1 ].dbo.Mortes_Covid
+where location like '%Brazil%' -- Aqui basta inserir o nome do país
+Order by 1,2
+
+
+
+-- A porcentagem de mortes pela quantidade de habitantes
+select location, date, population, ((total_deaths/population)*100) as 'Mortes/Habitantes'
+from [Projeto 1 ].dbo.Mortes_Covid
+where location like '%Brazil%' -- Aqui basta inserir o nome do país
+Order by 1,2
+
+
+
+-- A porcentagem de contaminação pelo total de habitantes
+select location, date, population, ((total_cases/population)*100) as 'Porcentagem da População Infectada'
+from [Projeto 1 ].dbo.Mortes_Covid
+where location like '%Brazil%' -- Aqui basta inserir o nome do país
+Order by 1,2
+
+
+
+-- Comparação cronológica 
+Select dea.date, dea.location, dea.new_deaths
+, Max(vac.total_vaccinations) over (partition by dea.location order by dea.location, dea.date) as TotalVacinados, 
+((Max(vac.total_vaccinations) over (partition by dea.location order by dea.location, dea.date))/dea.population) as TaxaVacinação
+from [Projeto 1 ].dbo.Mortes_Covid dea --abreviação para não precisar reescrever a base toda vez que for usar a fórmula
+Join [Projeto 1 ].dbo.VacinaçãoCovid vac --abreviação para não precisar reescrever a base toda vez que for usar a fórmula
+	on dea.location = vac.location
+	and dea.date = vac.date
+where dea.location like '%Brazil%'
+order by 1 
+
+
