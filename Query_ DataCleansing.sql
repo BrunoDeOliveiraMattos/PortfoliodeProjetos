@@ -1,7 +1,7 @@
 --Projeto de limpeza de dados
 
--- Nesse projeto o foco foi em criar colunas mais facilmente analis·veis, padronizar informaÁıes dentro das colunas,
---remover duplicatas e informaÁıes que n„o seriam ˙teis para a an·lise
+-- Nesse projeto o foco foi em criar colunas mais facilmente analis√°veis, padronizar informa√ß√µes dentro das colunas,
+--remover duplicatas e informa√ß√µes que n√£o seriam √∫teis para a an√°lise
 
 
 select DataCompra
@@ -21,13 +21,13 @@ set DataCompra = convert(date, SaleDate)
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
---Preenchendo valores em branco nos endereÁos
+--Preenchendo valores em branco nos endere√ßos
 Select *  
 from [Projeto 2].dbo.Housing
 --where PropertyAddress is null
 order by ParcelID
 
--- Com o cÛdigo acima, È pÛssÌvel perceber que existem linhas com o mesmo parcel ID mas Unique ID diferentes e isso pode estar ocasionando os valores nulos de endereÁo
+-- Com o c√≥digo acima, √© p√≥ss√≠vel perceber que existem linhas com o mesmo parcel ID mas Unique ID diferentes e isso pode estar ocasionando os valores nulos de endere√ßo
 
 select a.ParcelID, a.PropertyAddress, b.ParcelID, b.PropertyAddress
 from [Projeto 2].dbo.Housing a
@@ -36,7 +36,7 @@ join [Projeto 2].dbo.housing b
 	and a.[UniqueID ]<> b.[UniqueID ]
 where a.PropertyAddress is null
 
--- Para corrigir isso, basta utilizar a fÛrmula isnull e fazer o update
+-- Para corrigir isso, basta utilizar a f√≥rmula isnull e fazer o update
 
 select a.ParcelID, a.PropertyAddress, b.ParcelID, b.PropertyAddress, ISNULL(a.PropertyAddress,b.PropertyAddress)
 from [Projeto 2].dbo.Housing a
@@ -46,7 +46,7 @@ join [Projeto 2].dbo.housing b
 where a.PropertyAddress is null
 
 
-update a -- n„o podemos usar o nome da tabela, temos que usar cÛdigo atribuÌdo anteriormente
+update a -- n√£o podemos usar o nome da tabela, temos que usar c√≥digo atribu√≠do anteriormente
 set PropertyAddress = ISNULL(a.PropertyAddress,b.PropertyAddress) -- aqui estamos trocando a coluna antiga que continha os valores em branco pela nova
 from [Projeto 2].dbo.Housing a
 join [Projeto 2].dbo.housing b
@@ -62,7 +62,7 @@ where a.PropertyAddress is null
 -----------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 
--- Quebrando a coluna endereÁo em rua, cidade e estado
+-- Quebrando a coluna endere√ßo em rua, cidade e estado
 
 select 
 SUBSTRING(PropertyAddress,1, CHARINDEX(',',PropertyAddress)-1) as Address
@@ -77,13 +77,13 @@ select*
 from dbo.Housing
 
 Update dbo.Housing
-set Logradouro = SUBSTRING(PropertyAddress,1, CHARINDEX(',',PropertyAddress)-1) -- dessa forma pegamos tudo atÈ a vÌrgula
+set Logradouro = SUBSTRING(PropertyAddress,1, CHARINDEX(',',PropertyAddress)-1) -- dessa forma pegamos tudo at√© a v√≠rgula
 
 Alter Table dbo.housing
 add Cidade Nvarchar(255)
 
 Update dbo.Housing
-set Cidade= SUBSTRING(PropertyAddress, CHARINDEX(',',PropertyAddress)+1, len(PropertyAddress))  -- dessa forma pegamos tudo apÛs a vÌrgula
+set Cidade= SUBSTRING(PropertyAddress, CHARINDEX(',',PropertyAddress)+1, len(PropertyAddress))  -- dessa forma pegamos tudo ap√≥s a v√≠rgula
 
 
 
@@ -95,14 +95,14 @@ set Cidade= SUBSTRING(PropertyAddress, CHARINDEX(',',PropertyAddress)+1, len(Pro
 
 
 
--- Fazendo o mesmo para Owner Address, mas nesse caso existem duas vÌrgulas na coluna, por isso precisamos usar o ParseName
+-- Fazendo o mesmo para Owner Address, mas nesse caso existem duas v√≠rgulas na coluna, por isso precisamos usar o ParseName
 
-ParseName(Replace(OwnerAddress,',','.'),1) -- O parse name È usado para separar atravÈs do '.' e n„o pela ',' por isso precisamos usar o replace neste caso
+ParseName(Replace(OwnerAddress,',','.'),1) -- O parse name √© usado para separar atrav√©s do '.' e n√£o pela ',' por isso precisamos usar o replace neste caso
 
 
 select
 ParseName(Replace(OwnerAddress,',','.'),3),
-ParseName(Replace(OwnerAddress,',','.'),2),  -- importante reparar que o parsename comeÁa a separar pelo final da cÈlula, por isso est· descendente
+ParseName(Replace(OwnerAddress,',','.'),2),  -- importante reparar que o parsename come√ßa a separar pelo final da c√©lula, por isso est√° descendente
 ParseName(Replace(OwnerAddress,',','.'),1)
 from [Projeto 2].dbo.Housing
 
@@ -137,7 +137,7 @@ From dbo.Housing
 group by SoldAsVacant
 order by 2
 
---Usando a fÛrmula Case
+--Usando a f√≥rmula Case
 
 select dbo.Housing.SoldAsVacant
 , case when dbo.Housing.SoldAsVacant = 'Y' Then 'Yes'
@@ -200,7 +200,7 @@ where row_num >1
  
 
 
- --Removendo colunas que n„o ser„o usadas
+ --Removendo colunas que n√£o ser√£o usadas
 
  Alter Table dbo.housing
  drop column OwnerAddress, PropertyAddress,SaleDate,TaxDistrict
